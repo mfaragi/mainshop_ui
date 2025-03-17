@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+       <div class="spinner-border" role="status">
+            <span class="visually-hidden">در حال ارسال ...</span>
+            <p>لطفا صبر کنید...</p>
+        </div>
+     
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4> {{ form_header }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p}}
+                        <button class="form-cotrol btn btn-primary" type="submit">{{ form_submit }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <script>
+        const submit_form =document.getElementById('submit_form');
+    
+    
+        submit_form.addEventListener('click',function(){
+        
+        document.getElementById('loading').style.display = 'inline-block';
+        document.getElementById('content').style.display = 'block';
+        
+        
+    });
+        
+    </script>
+{% endblock %}
