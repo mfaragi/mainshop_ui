@@ -80,16 +80,19 @@
           <a class="dropdown-item" href="#">عمل سوم </a>
         </div>
       </li>
-        {%  if user.is_authenticated %}
+      {%  if user.is_authenticated %}  
       <li class="nav-item">
-        <a class="nav-link disabled" href="#">نام ونام خانواگی فرد</a>
+        <a class="nav-link" href="#">نام ونام خانواگی فرد</a>
       </li>
         {% else %}
             <li class="nav-item">
-        <a class="nav-link disabled" href="#"> ورود کاربر </a>
+        <a class="nav-link disabled" tabindex="-1" href="{% url 'user:login' %}"> ورود کاربر </a>
       </li>
-        {% endif %}
+      {% endif %}  
     </ul>
+    <a type="button" class="btn btn-danger me-2" href="{% url 'shopping:cart' %}">
+      سبد خرید<span class="badge bg-info">4</span>
+    </a>
     <form class="d-flex">
       <input class="form-control mr-sm-2" type="search" placeholder="جستجو در سایت " aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">جستجو</button>
@@ -125,7 +128,7 @@
         <a class=""  href="#">فروشنده میشوم </a>
         </li>
         <li class="list-inline-item">
-        <a class=""  href="#">چگونه اعتماد کنم  </a>
+        <a class=""  href="#">چگونه اعتماد کنم</a>
         </li>
         
     </ul>

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+        {# ستون سمت راست #}
+        <div class="col-12 col-md-8 me-2">
+            <div class="card row">
+                    <h4 class="col-12">لیست خرید شما</h4>
+                    <p class="col-12">1 کالا</p>
+            {% for cart in carts %}
+                <div class="row m-2">
+                    <img class="col-2 rounded-image me-3 p-2"
+                         src="{{ cart.product_image }}" alt=""/>
+                    <div class="col-9 p-4">
+                        <b class=" row">{{ cart.product_name }}</b>
+                        <b class=" row">{{ cart.final_Price }}</b>
+                        <b>تعداد={{ cart.quantity }}</b>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+
+
+        {# ستون سمت چپ #}
+        <div class=" card col-12 col-md-3">
+            <div class="row">
+                <p class="col-6">قیمت کالاها</p>
+                <p class="col-6"> {{ data_transaction.total_price }} تومان</p>
+            </div>
+            <div class="row">
+                <b class="col-6">قیمت کالاها با تخفیف</b>
+                <b class="col-6">{{ data_transaction.total_final_price }}  تومان </b>
+            </div>
+            <br><br>
+            <div class="row text success">
+                <b class="col-6">سود خرید شما</b>
+                <b class="col-6">{{ data_transaction.total_discount }} تومان </b>
+            </div>
+            <a class="row btn btn-success m-4">ثبت سفارش</a>
+
+        </div>
+        </div>
+    </div>
+
+{% endblock %}

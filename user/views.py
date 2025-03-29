@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import JsonResponse
+
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
@@ -7,7 +7,7 @@ import requests
 from requests import Response
 from rest_framework.views import APIView
 
-from user.forms import UserRegisterForm, UserRegisterVerifyForm, UserLoginForm, UserEditProfileForm, UserEditProfileForm
+from user.forms import *
 from user.models import MyToken
 from utils.constant import *
 from utils.utils import my_login
@@ -81,7 +81,7 @@ class UserRegisterVerify(APIView):
                                                              'form_submit': 'تکمیل ثبت نام'})
 
     @staticmethod
-    def post(self, request):
+    def post(request):
         my_value = request.session.post('user_data')
         email = my_value['email']
         password = my_value['password']
@@ -104,13 +104,9 @@ class UserRegisterVerify(APIView):
             response = requests.post(url, json=data)
             if response.status_code == 201:
                 messages.success(request, 'ثبت نام شما با موفقیت انجام شد')
-                # حالا در این مرحله یک یوزر در سایت میسازیم
-                user = User.objects.create_user(username=email, password=password)
 
-                token_login = response.json()['token_login']
-                request.session['token'] = response.json()['token']
-                MyToken.objects.create(user=user, token=token_login)
-                my_login(request, email, password, token_login)
+
+                my_login(request, email, password, token_login, response.json()['server_user_id'])
                 return redirect('home:home')
             else:
 
@@ -145,14 +141,15 @@ class UserLogin(APIView):
             }
             response = requests.post(url,json=data)
             if response.status_code == 200:
-                request.session['token']= response.json()['token']
+
                 #اینجا لاگین اتفاق افتاده است
-                my_login(request,email,password,response.json()['token'])
+                my_login(request, email, password, response.json()['token_login'], response.json()['server_user_id'])
                 messages.success(request,response.json()['status'])
+                return redirect('home:home')
             else:
                 #لاگین با خطا موجه شده است
                 messages.error(request,response.json()[ERROR_NAME])
-        return redirect('user:register')
+                return redirect('user:login')
 
 
 # برای ویرایش حساب کاربری

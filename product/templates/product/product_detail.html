@@ -11,19 +11,20 @@
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                 </ol>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img class="d-block w-100 rounded-image" src="..." alt="First slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>هدر بنر ها</h5>
-                            <p>..توضیحات بنر ها </p>
+                    {% for index ,image in banners.img_urls %}
+                        <div class="carousel-item{% if index == 0 %}active{% endif %}">
+                            <img class="d-block w-100 rounded-image" src="{{ image }}"
+                                 alt="First slide">
                         </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100 rounded-image" src="..." alt="Second slide">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100 rounded-image" src="..." alt="Third slide">
-                    </div>
+                    {% endfor %}
+                    {% if banners.video_url != '' %}
+                        <div class="carousel-item{% if index == 0 %}active{% endif %}">
+                          <video width="100%" height="100%" controls>
+                            <source src="{{ banners.video_url }}" type="video/mp4">
+                            <p>مرورگر شما از ویدیو پشتیبانی نمی‌کند.</p>
+                           </video>
+                        </div>
+                    {% endif %}
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -39,34 +40,42 @@
             {#------- create carousel ---------#}
             {#------- create detail ---------#}
             <div class="col12 col-md-4 card p-2 ms-2">
-                <h4> تیتر محصول اینجا قرار گیرد </h4>
-                <p>امتیازات محصول </p>
-                <a>مشاهده نظرات (30نظر)</a>
+                <h4> {{ product.product_name }}</h4>
+                <p> میانگین امتیازات :{{ product.product_rate }}</p>
+                <a>مشاهده نظرات ({{ product.product_comment_count }}نظر)</a>
             </div>
             {#------- create detail  ---------#}
             {#------- create more detail ---------#}
             <div class="row card mt-5 col-11 ms-2">
-                <h4> مشخصات کامل محصول فلان  </h4>
-                <p>توضیحات کامل محصول </p>
+                <h4> مشخصات کامل محصول {{ product.product_name }}  </h4>
+                <p>{{ product.product_description }} </p>
             </div>
             {#------- create more detail  ---------#}
             {#------- create comment box  ---------#}
+            <h4> نظرات کاربران </h4>
+            {% for comment in product.comments %}
             <div class="row card mt-5 col-11 ms-2">
-                <h4> نظرات کاربران </h4>
-                <p>نام شخص ونظر او</p>
+                <p>{{ comment.rete }}</p>
+                <p>{{ comment.user_id }}</p>
+                <p>{{ comment.comment }}</p>
             </div>
+            {% endfor %}
         </div>
         {#------- create comment box  ---------#}
         {#------- create user box  ---------#}
     <div class="row col-12 col-md-3">
         <div class="card">
-            <h4> مشخصات کاربر اینجا قرار گیرد  </h4>
-            <p>امتیازات کاربر </p>
-            <a>تعداد </a>
+            <h4> درباره فروشنده</h4>
+            {#<p> </p>#}
+            <h6>{{ product.user.user_name }}</h6>
+            <img style="width:25px" class="img-rounded" alt="" src="{{ product.user.user_profile_image }}">
         </div>
         <div class="card mt-4">
-            <h4 class="text-center"> قیمت محصول</h4>
-            <a class="btn btn-danger">افزودن به سبد خرید</a>
+            <h4 class="text-center">
+                <del>{{ product.product_price }}تومان</del>
+            </h4>
+            <h4 class="text-center">{{ product.product_final_price }}تومان</h4>
+            <a class="btn btn-danger" >افزودن به سبد خرید</a>
         </div>
         <br>
     </div>
